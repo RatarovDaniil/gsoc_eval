@@ -6,6 +6,7 @@ import os, sys
 # parse arguments
 parser = argparse.ArgumentParser(description='Create .csv file with all of the groups and datasets.')
 parser.add_argument('input', help='path to the input file')
+parser.add_argument('output', help='path to the output file')
 
 args = parser.parse_args()
 
@@ -55,4 +56,7 @@ with h5py.File(args.input, 'r') as file:
     data = BFS(file)
     
     df = pd.DataFrame.from_dict(data, orient='index', columns=['class','size','shape','dtype'])
-    df.to_csv('traverse_directory_tree.csv')
+    if '.csv' in args.output:
+        df.to_csv(args.output)
+    else:
+        df.to_csv(str(args.output) + '.csv')
